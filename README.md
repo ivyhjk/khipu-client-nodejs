@@ -34,6 +34,62 @@ const client = new Client({
 
 ```typescript
 // ...
-const banks = await client.getBanks();
-console.log(banks);
+const response = await client.getBanks();
+```
+
+### Create a payment
+
+```typescript
+// ...
+const response = await client.createPayment({
+  subject: 'a payment',
+  currency: 'CLP',
+  amount: 1000,
+  // ...
+});
+```
+
+### Create a payment
+
+```typescript
+// ...
+const response = await client.getPayment('the-payment-id');
+```
+
+### Delete a payment
+
+```typescript
+// ...
+const response = await client.deletePayment('the-payment-id');
+```
+
+### Confirm a payment
+
+```typescript
+// ...
+const response = await client.confirmPayment('the-payment-id');
+```
+
+### Create a receiver
+
+```typescript
+// ...
+const response = await client.createReceiver({
+  admin_first_name: '...',
+  admin_last_name: '...',
+  admin_email: '...',
+  country_code: '...',
+  business_identifier: '...',
+  business_category: '...',
+  business_name: '...',
+  business_phone: '...',
+  business_address_line_1: '...',
+  business_address_line_2: '...',
+  business_address_line_3: '...',
+  contact_full_name: '...',
+  contact_job_title: '...',
+  contact_email: '...',
+  contact_phone: '...',
+  // ...
+});
 ```
