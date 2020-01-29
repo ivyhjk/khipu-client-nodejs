@@ -1,0 +1,22 @@
+{
+  "name": "khipu-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": {
+    "name": "Elvis Munoz F.",
+    "email": "elvis.munoz.f@gmail.com"
+  },
+  "license": "LGPL",
+  "devDependencies": {
+    "@types/jest": "^25.1.0",
+    "@types/node": "^13.5.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.0.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  }
+}
