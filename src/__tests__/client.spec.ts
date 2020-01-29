@@ -103,7 +103,7 @@ describe('khipu.client.Client', () => {
       contact_full_name: 'Bar',
       contact_job_title: 'Fubar',
       contact_phone: '987654321',
-      country_code: 'CL',
+      country_code: 'CL'
     };
 
     await assertRequest(
