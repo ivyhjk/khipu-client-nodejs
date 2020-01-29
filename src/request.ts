@@ -16,8 +16,8 @@ interface RequestConfiguration<T> {
 }
 
 class Request<TResponse, TRequest = any> {
-  public static readonly HOST_NAME = 'khipu.com';
-  public static readonly API_ENDPOINT = '/api/2.0';
+  public static readonly HOST_NAME: string = 'khipu.com';
+  public static readonly API_ENDPOINT: string = '/api/2.0';
   private url?: string;
   private endpoint?: string;
   private path?: string;
