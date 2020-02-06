@@ -1,6 +1,6 @@
 {
   "name": "khipu-client",
-  "version": "1.0.0-RC",
+  "version": "1.0.0-RC.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
