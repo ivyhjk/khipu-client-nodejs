@@ -68,15 +68,15 @@ describe('khipu-client.request', () => {
       receiverId: 'a-receiver-id',
       secret: 'a-secret',
       body: {
-        foo: 'bar',
-        bar: 'baz',
-        baz: 'foo'
+        currency: 'CLP',
+        body: 'foo',
+        amount: 100
       }
     });
 
     const encodedURL = encodeURIComponent(request.getUrl());
 
-    const data = `POST&${encodedURL}&foo=bar&bar=baz&baz=foo`;
+    const data = `POST&${encodedURL}&amount=100&body=foo&currency=CLP`
 
     const expected = crypto
       .createHmac('sha256', 'a-secret')

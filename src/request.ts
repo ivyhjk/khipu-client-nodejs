@@ -7,6 +7,8 @@ import ValidationError from './errors/validationError';
 
 export type Method = 'GET' | 'POST' | 'DELETE';
 
+type BodyTuple = Array<[string, any]>;
+
 interface RequestConfiguration<T> {
   endpoint: string;
   method: Method;
@@ -24,6 +26,7 @@ class Request<TResponse, TRequest = any> {
   private hash?: string;
   private options?: https.RequestOptions;
   private postData?: null | string;
+  private bodyTuple?: BodyTuple;
 
   public constructor(
     public readonly configuration: RequestConfiguration<TRequest>
@@ -56,6 +59,53 @@ class Request<TResponse, TRequest = any> {
     return this.url;
   }
 
+  public getBodyTuple(): BodyTuple {
+    if (!this.bodyTuple) {
+      // field's order matters...
+      const fields = [
+        'amount',
+        'bank_id',
+        'body',
+        'cancel_url',
+        'collect_account_uuid',
+        'confirm_timeout_date',
+        'contract_url',
+        'currency',
+        'custom',
+        'expires_date',
+        'fixed_payer_personal_identifier',
+        'integrator_fee',
+        'mandatory_payment_method',
+        'notify_api_version',
+        'notify_url',
+        'payer_email',
+        'payer_name',
+        'picture_url',
+        'responsible_user_email',
+        'return_url',
+        'send_email',
+        'send_reminders',
+        'subject',
+        'transaction_id',
+      ];
+
+      const body: BodyTuple = [];
+
+      for (const field of fields) {
+        // @ts-ignore
+        const value = this.configuration.body[field];
+
+        if (typeof value !== 'undefined') {
+          body.push([field, value]);
+        }
+      }
+
+      this.bodyTuple = body;
+    }
+
+    return this.bodyTuple;
+  }
+
   public getHash(): string {
     if (!this.hash) {
       const chunks = [];
@@ -64,11 +114,7 @@ class Request<TResponse, TRequest = any> {
       chunks.push(encodeURIComponent(this.getUrl()));
 
       if (this.configuration.body) {
-        const body: { [key: string]: any } = this.configuration.body;
-        const keys = Object.keys(body);
-
-        for (const key of keys) {
-          const value = body[key];
+        for (const [key, value] of this.getBodyTuple()) {
           const encodedKey = encodeURIComponent(key);
           const encodedValue = encodeURIComponent(value);
 
