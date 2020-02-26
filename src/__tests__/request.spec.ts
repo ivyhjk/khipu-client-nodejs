@@ -3,6 +3,12 @@ import crypto from 'crypto';
 import Request from './../request';
 
 describe('khipu-client.request', () => {
+  const query = {
+    foo: 'bar',
+    bar: 'baz',
+    'ba/z': 'fo/o' // "/" is intentional, to check URL encoding support
+  };
+
   it('test given configurations', async () => {
     const request = new Request({
       endpoint: '/foo',
@@ -46,6 +52,35 @@ describe('khipu-client.request', () => {
     });
 
     expect(request.getPath()).toBe(`${Request.API_ENDPOINT}/foo`);
+  });
+
+  it('should check a valid URL full path', async () => {
+    const request = new Request({
+      endpoint: '/foo',
+      method: 'GET',
+      receiverId: 'a-receiver-id',
+      secret: 'a-secret',
+      query
+    });
+
+    expect(request.getFullPath())
+      .toBe(`${Request.API_ENDPOINT}/foo?foo=bar&bar=baz&ba%2Fz=fo%2Fo`);
+  });
+
+  it('should check a valid query tuple', async () => {
+    const request = new Request({
+      endpoint: '/foo',
+      method: 'GET',
+      receiverId: 'a-receiver-id',
+      secret: 'a-secret',
+      query
+    });
+
+    expect(request.getQueryTuple()).toEqual([
+      ['foo', 'bar'],
+      ['bar', 'baz'],
+      ['ba%2Fz', 'fo%2Fo']
+    ]);
   });
 
   it('should check a valid url', async () => {
@@ -149,5 +184,26 @@ describe('khipu-client.request', () => {
     expect(request.getOptions().headers!['Content-Length']).toBe(
       request.getPostData()!.length
     );
+  });
+
+  it('should check a valid hash with query parameters', async () => {
+    const request = new Request({
+      endpoint: '/foo',
+      method: 'POST',
+      receiverId: 'a-receiver-id',
+      secret: 'a-secret',
+      query
+    });
+
+    const encodedURL = encodeURIComponent(request.getUrl());
+
+    const data = `POST&${encodedURL}&foo=bar&bar=baz&ba%2Fz=fo%2Fo`;
+
+    const expected = crypto
+      .createHmac('sha256', 'a-secret')
+      .update(data)
+      .digest('hex');
+
+    expect(request.getHash()).toBe(expected);
   });
 });

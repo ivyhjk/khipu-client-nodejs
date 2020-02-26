@@ -7,7 +7,11 @@ import ValidationError from './errors/validationError';
 
 export type Method = 'GET' | 'POST' | 'DELETE';
 
-type BodyTuple = Array<[string, any]>;
+type StringAnyTuple = Array<[string, any]>;
+
+export interface RequestConfigurationQuery {
+  [key: string]: string;
+}
 
 interface RequestConfiguration<T> {
   endpoint: string;
@@ -15,6 +19,7 @@ interface RequestConfiguration<T> {
   secret: string;
   receiverId: string;
   body?: T;
+  query?: RequestConfigurationQuery;
 }
 
 class Request<TResponse, TRequest = any> {
@@ -23,10 +28,12 @@ class Request<TResponse, TRequest = any> {
   private url?: string;
   private endpoint?: string;
   private path?: string;
+  private fullPath?: string;
   private hash?: string;
   private options?: https.RequestOptions;
   private postData?: null | string;
-  private bodyTuple?: BodyTuple;
+  private bodyTuple?: StringAnyTuple;
+  private queryTuple?: StringAnyTuple;
 
   public constructor(
     public readonly configuration: RequestConfiguration<TRequest>
@@ -50,6 +57,25 @@ class Request<TResponse, TRequest = any> {
     return this.path;
   }
 
+  public getFullPath(): string {
+    if (!this.fullPath) {
+      let path = this.getPath();
+
+      if (this.configuration.query) {
+        const query = this
+          .getQueryTuple()
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&');
+
+        path = `${path}?${query}`
+      }
+
+      this.fullPath = path;
+    }
+
+    return this.fullPath;
+  }
+
   public getUrl(): string {
     if (!this.url) {
       this.url = `https://${Request.HOST_NAME}`;
@@ -59,7 +85,27 @@ class Request<TResponse, TRequest = any> {
     return this.url;
   }
 
-  public getBodyTuple(): BodyTuple {
+  public getQueryTuple(): StringAnyTuple {
+    if (!this.queryTuple) {
+      const query: StringAnyTuple = [];
+
+      if (this.configuration.query) {
+        const fields = Object.keys(this.configuration.query);
+
+        for (const field of fields) {
+          const value = this.configuration.query[field];
+
+          query.push([encodeURIComponent(field), encodeURIComponent(value)]);
+        }
+      }
+
+      this.queryTuple = query;
+    }
+
+    return this.queryTuple;
+  }
+
+  public getBodyTuple(): StringAnyTuple {
     if (!this.bodyTuple) {
       // field's order matters...
       const fields = [
@@ -89,7 +135,7 @@ class Request<TResponse, TRequest = any> {
         'transaction_id',
       ];
 
-      const body: BodyTuple = [];
+      const body: StringAnyTuple = [];
 
       for (const field of fields) {
         // @ts-ignore
@@ -112,6 +158,12 @@ class Request<TResponse, TRequest = any> {
 
       chunks.push(this.configuration.method);
       chunks.push(encodeURIComponent(this.getUrl()));
+
+      if (this.configuration.query) {
+        for (const [key, value] of this.getQueryTuple()) {
+          chunks.push(`${key}=${value}`);
+        }
+      }
 
       if (this.configuration.body) {
         for (const [key, value] of this.getBodyTuple()) {
@@ -149,7 +201,8 @@ class Request<TResponse, TRequest = any> {
     if (!this.options) {
       let headers: { [key: string]: any } = {
         Authorization: `${this.configuration.receiverId}:${this.getHash()}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json'
       };
 
       const postData = this.getPostData();
@@ -161,7 +214,7 @@ class Request<TResponse, TRequest = any> {
       this.options = {
         hostname: Request.HOST_NAME,
         port: 443,
-        path: this.getPath(),
+        path: this.getFullPath(),
         method: this.configuration.method,
         headers
       };
