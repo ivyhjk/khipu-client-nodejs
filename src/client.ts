@@ -8,7 +8,7 @@ import DeletePaymentResponse from './deletePaymentResponse';
 import PaymentResponse from './paymentResponse';
 import PaymentsResponse from './paymentsResponse';
 import RefundPaymentResponse from './refundPaymentResponse';
-import Request, { Method } from './request';
+import Request, { Method, RequestConfigurationQuery } from './request';
 
 class Client {
   public constructor(public readonly configuration: Configuration) {
@@ -18,14 +18,16 @@ class Client {
   public buildRequest<TResponse, TRequest = any>(
     endpoint: string,
     method: Method,
-    body?: TRequest
+    body?: TRequest,
+    query?: RequestConfigurationQuery
   ): Request<TResponse, TRequest> {
     return new Request<TResponse, TRequest>({
+      body,
       endpoint,
       method,
-      body,
+      query,
       receiverId: this.configuration.receiverId,
-      secret: this.configuration.secret
+      secret: this.configuration.secret,
     });
   }
 
@@ -33,10 +35,17 @@ class Client {
     return this.buildRequest<BanksResponse>('/banks', 'GET').execute();
   }
 
-  public async getPayments(
-    _notificationToken: string
+  public async getPaymentByNotificationToken(
+    notificationToken: string
   ): Promise<PaymentsResponse> {
-    throw new Error('not implemented');
+    return this.buildRequest<PaymentResponse>(
+      `/payments`,
+      'GET',
+      undefined,
+      {
+        notification_token: notificationToken
+      }
+    ).execute();
   }
 
   public async createPayment(
