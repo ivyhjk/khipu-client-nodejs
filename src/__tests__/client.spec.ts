@@ -53,6 +53,21 @@ describe('khipu.client.Client', () => {
     await assertRequest('getBanks', ['/banks', 'GET']);
   });
 
+  it('should call the payments with a GET request successfully', async () => {
+    await assertRequest(
+      'getPaymentByNotificationToken',
+      [
+        '/payments',
+        'GET',
+        undefined,
+        {
+          notification_token: 'token'
+        }
+      ],
+      'token'
+    );
+  });
+
   it('should call the payments with a POST request successfully', async () => {
     const body: CreatePaymentRequest = {
       amount: 13.37,
