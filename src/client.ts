@@ -38,7 +38,7 @@ class Client {
   public async getPaymentByNotificationToken(
     notificationToken: string
   ): Promise<PaymentsResponse> {
-    return this.buildRequest<PaymentResponse>(
+    return this.buildRequest<PaymentsResponse>(
       `/payments`,
       'GET',
       undefined,
