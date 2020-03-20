@@ -5,8 +5,8 @@ on:
     branches:
       - '*'
     paths-ignore:
-    - 'README.md'
-    - '.gitignore'
+      - 'README.md'
+      - '.gitignore'
 
 jobs:
   dependencies:
