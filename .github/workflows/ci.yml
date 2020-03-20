@@ -7,6 +7,9 @@ on:
     paths-ignore:
       - 'README.md'
       - '.gitignore'
+  pull_request:
+    branches:
+      - master
 
 jobs:
   dependencies:
