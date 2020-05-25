@@ -63,6 +63,15 @@ const response = await client.deletePayment('the-payment-id');
 const response = await client.confirmPayment('the-payment-id');
 ```
 
+### Get a payment by notification token
+
+```typescript
+// ...
+const response = await client.getPaymentByNotificationToken(
+  'the-notification-token'
+);
+```
+
 ### Create a receiver
 
 ```typescript
