@@ -1,7 +1,6 @@
 # Khipu Client NodeJS
 
-The goal of this bundle is provide a [NodeJS](https://nodejs.org) client for
-[Khipu](https://khipu.com).
+A [NodeJS](https://nodejs.org) client for [Khipu](https://khipu.com) (non official).
 
 ## Installation
 
