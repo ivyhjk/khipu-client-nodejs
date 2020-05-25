@@ -49,13 +49,6 @@ const response = await client.createPayment({
 });
 ```
 
-### Create a payment
-
-```typescript
-// ...
-const response = await client.getPayment('the-payment-id');
-```
-
 ### Delete a payment
 
 ```typescript
