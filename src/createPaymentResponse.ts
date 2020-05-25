@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 interface CreatePaymentResponse {
   /**
    * Identificador único del pago, es una cadena alfanumérica de 12 caracteres.
@@ -32,4 +34,3 @@ interface CreatePaymentResponse {
 }
 
 export default CreatePaymentResponse;
-

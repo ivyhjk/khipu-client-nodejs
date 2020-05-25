@@ -149,13 +149,13 @@ describe('khipu-client.request', () => {
     expect(request.getOptions().port).toBe(443);
     expect(request.getOptions().path).toBe(request.getPath());
     expect(request.getOptions().method).toBe('DELETE');
-    expect(request.getOptions().headers!.Authorization).toBe(
+    expect(request.getOptions().headers?.Authorization).toBe(
       `a-receiver-id:${request.getHash()}`
     );
-    expect(request.getOptions().headers!['Content-Type']).toBe(
+    expect(request.getOptions().headers?.['Content-Type']).toBe(
       'application/x-www-form-urlencoded'
     );
-    expect(request.getOptions().headers!['Content-Length']).toBeUndefined();
+    expect(request.getOptions().headers?.['Content-Length']).toBeUndefined();
   });
 
   it('should validate the request options with a body', async () => {
@@ -175,14 +175,15 @@ describe('khipu-client.request', () => {
     expect(request.getOptions().port).toBe(443);
     expect(request.getOptions().path).toBe(request.getPath());
     expect(request.getOptions().method).toBe('DELETE');
-    expect(request.getOptions().headers!.Authorization).toBe(
+    expect(request.getOptions().headers?.Authorization).toBe(
       `a-receiver-id:${request.getHash()}`
     );
-    expect(request.getOptions().headers!['Content-Type']).toBe(
+    expect(request.getOptions().headers?.['Content-Type']).toBe(
       'application/x-www-form-urlencoded'
     );
-    expect(request.getOptions().headers!['Content-Length']).toBe(
-      request.getPostData()!.length
+    expect(request.getPostData()?.length).toBeGreaterThan(0);
+    expect(request.getOptions().headers?.['Content-Length']).toBe(
+      request.getPostData()?.length
     );
   });
 

@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 interface CreateReceiverResponse {
   /**
    * Identificador único de la cuenta de cobro.

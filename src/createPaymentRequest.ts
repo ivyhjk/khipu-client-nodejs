@@ -1,4 +1,7 @@
-interface CreatePaymentRequest {
+/* eslint-disable camelcase */
+import MainRequest from './mainRequest';
+
+interface CreatePaymentRequest extends MainRequest {
   /**
    * Motivo.
    */

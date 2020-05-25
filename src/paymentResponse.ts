@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 interface PaymentResponse {
   /**
    * Identificador único del pago, es una cadena alfanumérica de 12 caracteres.
