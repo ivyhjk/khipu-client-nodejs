@@ -1,7 +1,6 @@
 # Khipu Client NodeJS
 
-The goal of this bundle is provide a [NodeJS](https://nodejs.org) client for
-[Khipu](https://khipu.com).
+A [NodeJS](https://nodejs.org) client for [Khipu](https://khipu.com) (non official).
 
 ## Installation
 
@@ -49,13 +48,6 @@ const response = await client.createPayment({
 });
 ```
 
-### Create a payment
-
-```typescript
-// ...
-const response = await client.getPayment('the-payment-id');
-```
-
 ### Delete a payment
 
 ```typescript
@@ -68,6 +60,15 @@ const response = await client.deletePayment('the-payment-id');
 ```typescript
 // ...
 const response = await client.confirmPayment('the-payment-id');
+```
+
+### Get a payment by notification token
+
+```typescript
+// ...
+const response = await client.getPaymentByNotificationToken(
+  'the-notification-token'
+);
 ```
 
 ### Create a receiver

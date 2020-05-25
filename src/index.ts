@@ -1,31 +1,18 @@
-import BanksResponse from './banksResponse';
 import Client from './client';
-import Configuration from './configuration';
-import ConfirmPaymentResponse from './confirmPaymentResponse';
-import CreatePaymentRequest from './createPaymentRequest';
-import CreatePaymentResponse from './createPaymentResponse';
-import CreateReceiverRequest from './createReceiverRequest';
-import CreateReceiverResponse from './createReceiverResponse';
-import DeletePaymentResponse from './deletePaymentResponse';
-import PaymentResponse from './paymentResponse';
-import PaymentsResponse from './paymentsResponse';
-import RefundPaymentResponse from './refundPaymentResponse';
-import Request from './request';
-import SuccessResponse from './successResponse';
 
-export {
-  BanksResponse,
-  Client,
-  Configuration,
-  ConfirmPaymentResponse,
-  CreatePaymentRequest,
-  CreatePaymentResponse,
-  CreateReceiverRequest,
-  CreateReceiverResponse,
-  DeletePaymentResponse,
-  PaymentResponse,
-  PaymentsResponse,
-  RefundPaymentResponse,
-  Request,
-  SuccessResponse
-};
+export { default as Configuration } from './configuration';
+export { default as ConfirmPaymentResponse } from './confirmPaymentResponse';
+export { default as CreatePaymentRequest } from './createPaymentRequest';
+export { default as CreatePaymentResponse } from './createPaymentResponse';
+export { default as CreateReceiverRequest } from './createReceiverRequest';
+export { default as CreateReceiverResponse } from './createReceiverResponse';
+export { default as DeletePaymentResponse } from './deletePaymentResponse';
+export { default as PaymentResponse } from './paymentResponse';
+export { default as PaymentsResponse } from './paymentsResponse';
+export { default as RefundPaymentResponse } from './refundPaymentResponse';
+export { default as Request } from './request';
+export { default as SuccessResponse } from './successResponse';
+export { default as BanksResponse } from './banksResponse';
+
+export { Client };
+export default Client;

@@ -4,10 +4,13 @@ import querystring from 'querystring';
 
 import AuthorizationError from './errors/authorizationError';
 import ValidationError from './errors/validationError';
+import MainRequest from './mainRequest';
 
 export type Method = 'GET' | 'POST' | 'DELETE';
 
-type StringAnyTuple = Array<[string, any]>;
+type RequestRecordType = string | number | boolean;
+
+type StringAnyTuple = Array<[string, RequestRecordType]>;
 
 export interface RequestConfigurationQuery {
   [key: string]: string;
@@ -22,7 +25,7 @@ interface RequestConfiguration<T> {
   query?: RequestConfigurationQuery;
 }
 
-class Request<TResponse, TRequest = any> {
+class Request<TResponse, TRequest extends MainRequest = MainRequest> {
   public static readonly HOST_NAME: string = 'khipu.com';
   public static readonly API_ENDPOINT: string = '/api/2.0';
   private url?: string;
@@ -34,14 +37,13 @@ class Request<TResponse, TRequest = any> {
   private postData?: null | string;
   private bodyTuple?: StringAnyTuple;
   private queryTuple?: StringAnyTuple;
+  public readonly configuration: RequestConfiguration<TRequest>
 
-  public constructor(
-    public readonly configuration: RequestConfiguration<TRequest>
-  ) {
-
+  public constructor (configuration: RequestConfiguration<TRequest>) {
+    this.configuration = configuration;
   }
 
-  public getEndpoint(): string {
+  public getEndpoint (): string {
     if (!this.endpoint) {
       this.endpoint = '/' + this.configuration.endpoint.replace(/^\//, '');
     }
@@ -49,7 +51,7 @@ class Request<TResponse, TRequest = any> {
     return this.endpoint;
   }
 
-  public getPath(): string {
+  public getPath (): string {
     if (!this.path) {
       this.path = Request.API_ENDPOINT + this.getEndpoint();
     }
@@ -57,7 +59,7 @@ class Request<TResponse, TRequest = any> {
     return this.path;
   }
 
-  public getFullPath(): string {
+  public getFullPath (): string {
     if (!this.fullPath) {
       let path = this.getPath();
 
@@ -67,7 +69,7 @@ class Request<TResponse, TRequest = any> {
           .map(([key, value]) => `${key}=${value}`)
           .join('&');
 
-        path = `${path}?${query}`
+        path = `${path}?${query}`;
       }
 
       this.fullPath = path;
@@ -76,7 +78,7 @@ class Request<TResponse, TRequest = any> {
     return this.fullPath;
   }
 
-  public getUrl(): string {
+  public getUrl (): string {
     if (!this.url) {
       this.url = `https://${Request.HOST_NAME}`;
       this.url += this.getPath();
@@ -85,7 +87,7 @@ class Request<TResponse, TRequest = any> {
     return this.url;
   }
 
-  public getQueryTuple(): StringAnyTuple {
+  public getQueryTuple (): StringAnyTuple {
     if (!this.queryTuple) {
       const query: StringAnyTuple = [];
 
@@ -105,7 +107,7 @@ class Request<TResponse, TRequest = any> {
     return this.queryTuple;
   }
 
-  public getBodyTuple(): StringAnyTuple {
+  public getBodyTuple (): StringAnyTuple {
     if (!this.bodyTuple) {
       // field's order matters...
       const fields = [
@@ -132,17 +134,18 @@ class Request<TResponse, TRequest = any> {
         'send_email',
         'send_reminders',
         'subject',
-        'transaction_id',
+        'transaction_id'
       ];
 
       const body: StringAnyTuple = [];
 
-      for (const field of fields) {
-        // @ts-ignore
-        const value = this.configuration.body[field];
+      if (this.configuration.body) {
+        for (const field of fields) {
+          const value = this.configuration.body[field];
 
-        if (typeof value !== 'undefined') {
-          body.push([field, value]);
+          if (typeof value !== 'undefined') {
+            body.push([field, value]);
+          }
         }
       }
 
@@ -152,7 +155,7 @@ class Request<TResponse, TRequest = any> {
     return this.bodyTuple;
   }
 
-  public getHash(): string {
+  public getHash (): string {
     if (!this.hash) {
       const chunks = [];
 
@@ -184,12 +187,11 @@ class Request<TResponse, TRequest = any> {
     return this.hash;
   }
 
-  public getPostData(): null | string {
+  public getPostData (): null | string {
     if (typeof this.postData === 'undefined') {
       if (!this.configuration.body) {
         this.postData = null;
       } else {
-        // @ts-ignore
         this.postData = querystring.stringify(this.configuration.body);
       }
     }
@@ -197,9 +199,9 @@ class Request<TResponse, TRequest = any> {
     return this.postData;
   }
 
-  public getOptions(): https.RequestOptions {
+  public getOptions (): https.RequestOptions {
     if (!this.options) {
-      let headers: { [key: string]: any } = {
+      const headers: Record<string, string|number> = {
         Authorization: `${this.configuration.receiverId}:${this.getHash()}`,
         'Content-Type': 'application/x-www-form-urlencoded',
         Accept: 'application/json'
@@ -223,10 +225,10 @@ class Request<TResponse, TRequest = any> {
     return this.options;
   }
 
-  public async execute(): Promise<TResponse> {
+  public async execute (): Promise<TResponse> {
     return new Promise((resolve, reject) => {
       const req = https.request(this.getOptions(), (res) => {
-        let chunks: string = '';
+        let chunks = '';
 
         res.on('data', (chunk) => {
           chunks += chunk;

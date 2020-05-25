@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 interface Bank {
   /**
    * Identificador del banco.

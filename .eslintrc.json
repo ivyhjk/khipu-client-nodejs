@@ -1,35 +1,40 @@
 {
+  "root": true,
   "env": {
-    "browser": true,
-    "es6": true,
     "jest": true
   },
-  "extends": [
-    "semistandard"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
   "plugins": [
     "@typescript-eslint"
   ],
-  "rules": {},
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "semistandard"
+  ],
+  "ignorePatterns": [
+    "dist/**"
+  ],
   "overrides": [
     {
       "files": [
-        "*.ts"
+        "**/*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "no-undef": "off"
+      }
+    },
+    {
+      "files": [
+        "**/*.ts"
       ],
       "rules": {
-        "@typescript-eslint/no-unused-vars": [
-          2,
+        "@typescript-eslint/no-empty-interface": [
+          "error",
           {
-            "args": "none"
+            "allowSingleExtends": true
           }
         ]
       }

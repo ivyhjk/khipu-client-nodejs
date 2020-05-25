@@ -2,6 +2,12 @@ import Client from '../client';
 import CreatePaymentRequest from '../createPaymentRequest';
 import CreateReceiverRequest from '../createReceiverRequest';
 
+/*
+  eslint-disable
+    @typescript-eslint/no-explicit-any,
+    @typescript-eslint/ban-ts-comment
+*/
+
 describe('khipu.client.Client', () => {
   const assertRequest = async (
     method: string,
