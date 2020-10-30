@@ -32,7 +32,7 @@
     "husky": "^4.2.5",
     "jest": "^25.1.0",
     "lint-staged": "^10.2.6",
-    "semistandard": "^14.2.0",
+    "semistandard": "^16.0.0",
     "ts-jest": "^25.0.0",
     "ts-node": "^9.0.0",
     "typescript": "^3.7.5"
