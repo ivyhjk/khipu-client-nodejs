@@ -2,8 +2,18 @@
   "name": "khipu-client",
   "version": "1.0.0",
   "description": "A NodeJS client for Khipu (non official).",
+  "keywords": [
+    "khipu",
+    "khipu-client",
+    "client"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/ivyhjk/khipu-client-nodejs#readme",
+  "bugs": "https://github.com/ivyhjk/khipu-client-nodejs/issues",
   "scripts": {
     "test": "jest",
     "build": "tsc",
