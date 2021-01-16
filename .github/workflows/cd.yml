@@ -81,7 +81,7 @@ jobs:
   publish:
     name: 'cd npm publish'
     needs:
-      - linter
+      - lint
       - tests
     runs-on: ubuntu-latest
     steps:
