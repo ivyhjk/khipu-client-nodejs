@@ -16,6 +16,10 @@ with Yarn:
 yarn add khipu-client
 ```
 
+## Examples
+
+- [khipu-client-nodejs-example](https://github.com/ivyhjk/khipu-client-nodejs-example#readme)
+
 ## Usage
 
 Generate a new client to make requests:
