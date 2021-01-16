@@ -1,7 +1,5 @@
 import SuccessResponse from './successResponse';
 
-interface ConfirmPaymentResponse extends SuccessResponse {
-
-}
+type ConfirmPaymentResponse = SuccessResponse
 
 export default ConfirmPaymentResponse;

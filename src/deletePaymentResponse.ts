@@ -1,7 +1,5 @@
 import SuccessResponse from './successResponse';
 
-interface DeletePaymentResponse extends SuccessResponse {
-
-}
+type DeletePaymentResponse = SuccessResponse
 
 export default DeletePaymentResponse;
