@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "A NodeJS client for Khipu (non official).",
   "keywords": [
-    "khipu",
+    "client",
+    "gateway",
     "khipu-client",
-    "client"
+    "khipu",
+    "payment-gateway",
+    "payment",
+    "typescript"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
