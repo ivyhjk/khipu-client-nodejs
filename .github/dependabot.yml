@@ -4,39 +4,8 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    time: "09:00"
   open-pull-requests-limit: 10
   reviewers:
-  - ivyhjk
+    - ivyhjk
   assignees:
-  - ivyhjk
-  ignore:
-  - dependency-name: "@types/node"
-    versions:
-    - 14.14.36
-    - 15.0.0
-  - dependency-name: eslint
-    versions:
-    - 7.19.0
-    - 7.22.0
-    - 7.24.0
-  - dependency-name: "@typescript-eslint/eslint-plugin"
-    versions:
-    - 4.19.0
-  - dependency-name: "@typescript-eslint/parser"
-    versions:
-    - 4.14.2
-    - 4.18.0
-    - 4.19.0
-  - dependency-name: husky
-    versions:
-    - 5.2.0
-  - dependency-name: "@types/jest"
-    versions:
-    - 26.0.21
-  - dependency-name: typescript
-    versions:
-    - 4.2.2
-  - dependency-name: "@ivyhjk/eslint-config-typescript"
-    versions:
-    - 0.0.1-next.2
+    - ivyhjk
