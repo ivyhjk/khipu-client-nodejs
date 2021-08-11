@@ -33,7 +33,7 @@
   "license": "LGPL",
   "devDependencies": {
     "@ivyhjk/eslint-config-typescript": "0.0.1-next.4",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^27.0.0",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
