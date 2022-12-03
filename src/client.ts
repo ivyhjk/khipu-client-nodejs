@@ -1,15 +1,21 @@
-import BanksResponse from './banksResponse';
-import Configuration from './configuration';
-import ConfirmPaymentResponse from './confirmPaymentResponse';
-import CreatePaymentRequest from './createPaymentRequest';
-import CreatePaymentResponse from './createPaymentResponse';
-import CreateReceiverRequest from './createReceiverRequest';
-import DeletePaymentResponse from './deletePaymentResponse';
-import MainRequest from './mainRequest';
-import PaymentResponse from './paymentResponse';
-import PaymentsResponse from './paymentsResponse';
-import RefundPaymentResponse from './refundPaymentResponse';
-import Request, { Method, RequestConfigurationQuery } from './request';
+import {
+  BanksResponse,
+  ConfirmPaymentRequest,
+  ConfirmPaymentResponse,
+  CreatePaymentRequest,
+  CreatePaymentResponse,
+  CreateReceiverRequest,
+  CreateReceiverResponse,
+  DeletePaymentRequest,
+  DeletePaymentResponse,
+  GetPaymentsRequest,
+  GetPaymentsResponse,
+  RefundPaymentRequest,
+  RefundPaymentResponse,
+  RequestBody
+} from './api';
+import Request, { Method, RequestConfigurationQuery } from './api/request';
+import { Configuration } from './types';
 
 class Client {
   public readonly configuration: Configuration;
@@ -18,13 +24,13 @@ class Client {
     this.configuration = configuration;
   }
 
-  public buildRequest<TResponse, TRequest extends MainRequest = MainRequest> (
+  public buildRequest<TResponse, TRequestBody extends RequestBody = RequestBody> (
     endpoint: string,
     method: Method,
-    body?: TRequest,
+    body?: TRequestBody,
     query?: RequestConfigurationQuery
-  ): Request<TResponse, TRequest> {
-    return new Request<TResponse, TRequest>({
+  ): Request<TResponse, TRequestBody> {
+    return new Request<TResponse, TRequestBody>({
       body,
       endpoint,
       method,
@@ -38,19 +44,6 @@ class Client {
     return this.buildRequest<BanksResponse>('/banks', 'GET').execute();
   }
 
-  public async getPaymentByNotificationToken (
-    notificationToken: string
-  ): Promise<PaymentsResponse> {
-    return this.buildRequest<PaymentsResponse>(
-      '/payments',
-      'GET',
-      undefined,
-      {
-        notification_token: notificationToken
-      }
-    ).execute();
-  }
-
   public async createPayment (
     body: CreatePaymentRequest
   ): Promise<CreatePaymentResponse> {
@@ -61,38 +54,49 @@ class Client {
     ).execute();
   }
 
-  public async getPayment (id: string): Promise<PaymentResponse> {
-    return this.buildRequest<PaymentResponse>(
-      `/payments/${id}`,
+  public async getPayments (
+    body: GetPaymentsRequest
+  ): Promise<GetPaymentsResponse> {
+    return this.buildRequest<GetPaymentsResponse, GetPaymentsRequest>(
+      '/payments',
+      'GET',
+      undefined,
+      body
+    ).execute();
+  }
+
+  public async getPayment (body: GetPaymentsRequest): Promise<GetPaymentsResponse> {
+    return this.buildRequest<GetPaymentsResponse>(
+      `/payments/${body.id}`,
       'GET'
     ).execute();
   }
 
-  public async deletePayment (id: string): Promise<DeletePaymentResponse> {
+  public async deletePayment (body: DeletePaymentRequest): Promise<DeletePaymentResponse> {
     return this.buildRequest<DeletePaymentResponse>(
-      `/payments/${id}`,
+      `/payments/${body.id}`,
       'DELETE'
     ).execute();
   }
 
-  public async confirmPayment (id: string): Promise<ConfirmPaymentResponse> {
+  public async confirmPayment (body: ConfirmPaymentRequest): Promise<ConfirmPaymentResponse> {
     return this.buildRequest<DeletePaymentResponse>(
-      `/payments/${id}/confirm`,
+      `/payments/${body.id}/confirm`,
       'GET'
     ).execute();
   }
 
-  public async refundPayment (id: string): Promise<RefundPaymentResponse> {
+  public async refundPayment (body: RefundPaymentRequest): Promise<RefundPaymentResponse> {
     return this.buildRequest<DeletePaymentResponse>(
-      `/payments/${id}/refunds`,
+      `/payments/${body.id}/refunds`,
       'GET'
     ).execute();
   }
 
   public async createReceiver (
     request: CreateReceiverRequest
-  ): Promise<CreatePaymentResponse> {
-    return this.buildRequest<CreatePaymentResponse, CreateReceiverRequest>(
+  ): Promise<CreateReceiverResponse> {
+    return this.buildRequest<CreateReceiverResponse, CreateReceiverRequest>(
       '/receivers',
       'POST',
       request

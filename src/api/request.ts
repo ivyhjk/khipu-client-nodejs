@@ -2,9 +2,9 @@ import crypto from 'crypto';
 import https from 'https';
 import querystring from 'querystring';
 
-import AuthorizationError from './errors/authorizationError';
-import ValidationError from './errors/validationError';
-import MainRequest from './mainRequest';
+import AuthorizationError from '../errors/authorizationError';
+import ValidationError from '../errors/validationError';
+import RequestBody from './requestBody';
 
 export type Method = 'GET' | 'POST' | 'DELETE';
 
@@ -12,7 +12,7 @@ type RequestRecordType = string | number | boolean;
 
 type StringAnyTuple = Array<[string, RequestRecordType]>;
 
-export interface RequestConfigurationQuery {
+export interface RequestConfigurationQuery extends RequestBody {
   [key: string]: string;
 }
 
@@ -25,7 +25,7 @@ interface RequestConfiguration<T> {
   query?: RequestConfigurationQuery;
 }
 
-class Request<TResponse, TRequest extends MainRequest = MainRequest> {
+class Request<TResponse, TRequest extends RequestBody = RequestBody> {
   public static readonly HOST_NAME: string = 'khipu.com';
   public static readonly API_ENDPOINT: string = '/api/2.0';
   private url?: string;
@@ -37,7 +37,7 @@ class Request<TResponse, TRequest extends MainRequest = MainRequest> {
   private postData?: null | string;
   private bodyTuple?: StringAnyTuple;
   private queryTuple?: StringAnyTuple;
-  public readonly configuration: RequestConfiguration<TRequest>
+  public readonly configuration: RequestConfiguration<TRequest>;
 
   public constructor (configuration: RequestConfiguration<TRequest>) {
     this.configuration = configuration;

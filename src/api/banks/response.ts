@@ -28,8 +28,8 @@ interface Bank {
   parent: string;
 }
 
-interface BankResponse {
+interface BanksResponse {
   banks: ReadonlyArray<Bank>
 }
 
-export default BankResponse;
+export default BanksResponse;

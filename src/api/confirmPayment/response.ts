@@ -1,4 +1,4 @@
-import SuccessResponse from './successResponse';
+import SuccessResponse from '../successResponse';
 
 type ConfirmPaymentResponse = SuccessResponse
 

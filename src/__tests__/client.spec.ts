@@ -1,6 +1,5 @@
+import { CreatePaymentRequest, CreateReceiverRequest } from '../api';
 import Client from '../client';
-import CreatePaymentRequest from '../createPaymentRequest';
-import CreateReceiverRequest from '../createReceiverRequest';
 
 /*
   eslint-disable
@@ -8,7 +7,7 @@ import CreateReceiverRequest from '../createReceiverRequest';
     @typescript-eslint/ban-ts-comment
 */
 
-describe('khipu.client.Client', () => {
+describe('khipu/client', () => {
   const assertRequest = async (
     method: string,
     requestArguments: Array<any>,
@@ -47,31 +46,20 @@ describe('khipu.client.Client', () => {
     const request = client.buildRequest(
       '/the-endpoint',
       'POST',
-      { foo: 'bar' }
+      { foo: 'bar' },
+      { bar: 'baz' }
     );
 
+    expect(request.configuration.body).toStrictEqual({ foo: 'bar' });
     expect(request.configuration.endpoint).toBe('/the-endpoint');
     expect(request.configuration.method).toBe('POST');
-    expect(request.configuration.body).toStrictEqual({ foo: 'bar' });
+    expect(request.configuration.query).toStrictEqual({ bar: 'baz' });
+    expect(request.configuration.receiverId).toBe('test-receiver-id');
+    expect(request.configuration.secret).toBe('test-secret');
   });
 
-  it('should call the banks with a GET request successfully', async () => {
+  it('should call getBanks method successfully', async () => {
     await assertRequest('getBanks', ['/banks', 'GET']);
-  });
-
-  it('should call the payments with a GET request successfully', async () => {
-    await assertRequest(
-      'getPaymentByNotificationToken',
-      [
-        '/payments',
-        'GET',
-        undefined,
-        {
-          notification_token: 'token'
-        }
-      ],
-      'token'
-    );
   });
 
   it('should call the payments with a POST request successfully', async () => {
@@ -84,31 +72,50 @@ describe('khipu.client.Client', () => {
     await assertRequest('createPayment', ['/payments', 'POST', body], body);
   });
 
-  it('should call the payments with a GET request successfully', async () => {
-    await assertRequest('getPayment', ['/payments/foo', 'GET'], 'foo');
+  it('should call getPayments method successfully', async () => {
+    await assertRequest(
+      'getPayments',
+      [
+        '/payments',
+        'GET',
+        undefined,
+        {
+          notification_token: 'token'
+        }
+      ],
+      {
+        notification_token: 'token'
+      }
+    );
   });
 
-  it('should call the payments with a DELETE request successfully', async () => {
-    await assertRequest('deletePayment', ['/payments/foo', 'DELETE'], 'foo');
+  it('should call getPayment method successfully', async () => {
+    await assertRequest('getPayment', ['/payments/foo', 'GET'], {
+      id: 'foo'
+    });
   });
 
-  it('should call the payments confirm with a GET request successfully', async () => {
+  it('should call deletePayment method successfully', async () => {
+    await assertRequest('deletePayment', ['/payments/foo', 'DELETE'], { id: 'foo' });
+  });
+
+  it('should call confirmPayment method successfully', async () => {
     await assertRequest(
       'confirmPayment',
       ['/payments/foo/confirm', 'GET'],
-      'foo'
+      { id: 'foo' }
     );
   });
 
-  it('should call the payments refunds with a GET request successfully', async () => {
+  it('should call refundPayment method successfully', async () => {
     await assertRequest(
       'refundPayment',
       ['/payments/foo/refunds', 'GET'],
-      'foo'
+      { id: 'foo' }
     );
   });
 
-  it('should call the receivers with a POST request successfully', async () => {
+  it('should call createReceiver method successfully', async () => {
     const request: CreateReceiverRequest = {
       admin_email: 'admin@example.com',
       admin_first_name: 'Foo',

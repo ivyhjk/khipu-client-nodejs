@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-import Request from '../request';
+import Request from '../../api/request';
 
 describe('khipu-client.request', () => {
   const query = {

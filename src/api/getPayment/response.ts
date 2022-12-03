@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-interface PaymentResponse {
+interface GetPaymentResponse {
   /**
    * Identificador único del pago, es una cadena alfanumérica de 12 caracteres.
    */
@@ -167,4 +167,4 @@ interface PaymentResponse {
   payment_method: string;
 }
 
-export default PaymentResponse;
+export default GetPaymentResponse;
