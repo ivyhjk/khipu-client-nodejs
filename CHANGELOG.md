@@ -25,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump `ts-jest` from `27.0.5` to `29.0.3`
 - Bump `ts-node` from `10.2.1` to `10.9.1`
 - Bump `typescript` from `4.4.2` to `4.9.3`
+- Bump CI and CD `actions/cache` from `v2` to `v3`
+- Bump CI and CD `actions/checkout` from `v2` to `v3`
+- Bump CI and CD `actions/setup-node` from `v2` to `v3`
 - Folder structures, now uses api folder to store each api endpoint's request and response.
 - Jest now uses typescript configuration file.
 
