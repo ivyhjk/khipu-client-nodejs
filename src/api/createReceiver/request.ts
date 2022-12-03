@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import MainRequest from './mainRequest';
+import RequestBody from '../requestBody';
 
-interface CreateReceiverRequest extends MainRequest {
+interface CreateReceiverRequest extends RequestBody {
   /**
    * Nombre de pila del administrador de la cuenta de cobro a crear.
    */
