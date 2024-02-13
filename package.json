@@ -37,7 +37,7 @@
     "@ivyhjk/eslint-config-typescript": "^0.0.1-next.5",
     "@types/jest": "^29.2.3",
     "@types/node": "^20.1.1",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.29.0",
     "eslint-config-semistandard": "^17.0.0",
